@@ -38,7 +38,7 @@ export const SidebarLayerItem: FC<SidebarLayerItemProps> = ({
       </LayerHeader>
       <ComponentsWrapper>
         {canvasComponents.map((c) => (
-          <span>{c.name}</span>
+          <span key={c.id}>{c.name}</span>
         ))}
       </ComponentsWrapper>
     </StyledLayer>

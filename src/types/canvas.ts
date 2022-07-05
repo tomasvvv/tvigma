@@ -1,8 +1,6 @@
-import { Layer } from './layers';
-
 export enum ComponentShapeType {
   Rectangle = 'rect',
-  Circle = 'circle',
+  // Circle = 'circle',
 }
 
 export interface ComponentStyle {
@@ -20,21 +18,37 @@ export interface RectangleSize {
   height: number;
 }
 
-export interface CircleSize {
-  radius: number;
-}
-
 export interface CanvasComponent {
   id: string;
-  parentLayerId: Layer['id'];
+  parentLayerId: string;
   name: string;
   shapeType: ComponentShapeType;
   style: ComponentStyle;
-  size: ComponentSize;
+  size: RectangleSize;
   position: ComponentPosition;
 }
 
 export type NewCanvasComponent = Omit<CanvasComponent, 'parentLayerId'>;
 
-export type ComponentSize<T = ComponentShapeType> =
-  T extends ComponentShapeType.Rectangle ? RectangleSize : CircleSize;
+export interface UpdateLayerComponent
+  extends Pick<CanvasComponent, 'size' | 'position'> {
+  layerId: string;
+  componentId: string;
+}
+
+/**
+ * TODO: make different types for different components
+ *
+ */
+
+//  export interface RectangleSize {
+//   width: number;
+//   height: number;
+// }
+
+// export interface CircleSize {
+//   radius: number;
+// }
+
+// export type ComponentSize<T = ComponentShapeType> =
+//   T extends ComponentShapeType.Rectangle ? RectangleSize : CircleSize;

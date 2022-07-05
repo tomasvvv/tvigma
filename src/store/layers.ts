@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { NewCanvasComponent } from '../types/canvas';
+import { NewCanvasComponent, UpdateLayerComponent } from '../types/canvas';
 import { Layer, LayerSliceState } from '../types/layers';
 
 const initialState: LayerSliceState = {
@@ -50,6 +50,24 @@ const layersSlice = createSlice({
     ) => {
       state.activeLayer = action.payload;
     },
+    updateLayerComponent: (
+      state,
+      action: PayloadAction<UpdateLayerComponent>
+    ) => {
+      const { layerId, componentId, size, position } = action.payload;
+
+      const lIndex = state.layers.findIndex((l) => l.id === layerId);
+      if (!lIndex) return;
+
+      const cIndex = state.layers[lIndex].canvasComponents.findIndex(
+        (c) => c.id === componentId
+      );
+
+      if (!cIndex) return;
+
+      state.layers[lIndex].canvasComponents[cIndex].size = size;
+      state.layers[lIndex].canvasComponents[cIndex].position = position;
+    },
   },
 });
 
@@ -61,5 +79,6 @@ export const {
     swapLayers,
     setActiveLayer,
     addComponentToLayer,
+    updateLayerComponent,
   },
 } = layersSlice;
