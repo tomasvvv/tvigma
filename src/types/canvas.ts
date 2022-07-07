@@ -1,3 +1,5 @@
+import { TransformationEvent } from './layers';
+
 export enum ComponentShapeType {
   Rectangle = 'rect',
   // Circle = 'circle',
@@ -30,8 +32,7 @@ export interface CanvasComponent {
 
 export type NewCanvasComponent = Omit<CanvasComponent, 'parentLayerId'>;
 
-export interface UpdateLayerComponent
-  extends Pick<CanvasComponent, 'size' | 'position'> {
+export interface UpdateLayerComponent extends TransformationEvent {
   layerId: string;
   componentId: string;
 }

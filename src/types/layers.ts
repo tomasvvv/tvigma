@@ -13,4 +13,9 @@ export interface Layer extends LayerBase {
 export interface LayerSliceState {
   layers: Layer[];
   activeLayer: Layer['id'] | undefined;
+  activeComponent: CanvasComponent['id'] | undefined;
 }
+
+export type TransformationEvent = Partial<
+  Pick<CanvasComponent, 'size' | 'position'>
+>;

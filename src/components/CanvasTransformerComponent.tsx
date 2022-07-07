@@ -1,17 +1,30 @@
 import { cloneElement, FC, ReactElement, useEffect, useRef } from 'react';
 import { Transformer } from 'react-konva';
 
-interface CanvasTransformerComponentProps {
-  component: ReactElement;
-  onChange: (x: any) => void;
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { setActiveComponent } from '../store/layers';
+import { CanvasComponent } from '../types/canvas';
+import { TransformationEvent } from '../types/layers';
+
+interface Props extends Partial<CanvasComponent> {
+  onTransform: (e: TransformationEvent) => void;
+  children: ReactElement;
 }
 
-export const CanvasTransformerComponent: FC<
-  CanvasTransformerComponentProps
-> = ({ component, onChange, ...props }) => {
+export const CanvasTransformerComponent: FC<Props> = ({
+  onTransform,
+  id,
+  children,
+  ...props
+}) => {
   const transformerRef = useRef<any>();
   const shapeRef = useRef<any>();
-  const isSelected = true;
+  const dispatch = useAppDispatch();
+  const { activeComponent } = useAppSelector((s) => s.layers);
+
+  console.log(`activeComponent,id`, activeComponent, id);
+
+  const isSelected = activeComponent === id;
 
   useEffect(() => {
     if (!isSelected) return;
@@ -20,7 +33,6 @@ export const CanvasTransformerComponent: FC<
     transformerRef.current.getLayer().batchDraw();
   }, [isSelected]);
 
-  const handleSelect = () => {};
   const handleTransformEnd = () => {
     const node = shapeRef.current;
     const [scaleX, scaleY] = [node.scaleX(), node.scaleY()];
@@ -30,8 +42,7 @@ export const CanvasTransformerComponent: FC<
     node.scaleX(1);
     node.scaleY(1);
 
-    onChange({
-      ...props,
+    onTransform({
       position: {
         x,
         y,
@@ -43,25 +54,34 @@ export const CanvasTransformerComponent: FC<
     });
   };
 
-  const handleDragEnd = ({ target: { x, y } }: any) => {
-    onChange?.({ ...props, x: x(), y: y() });
+  const handleDragEnd = ({
+    target: {
+      attrs: { x, y },
+    },
+  }: any) => {
+    console.log(`drag end`);
+    // dispatch(setActiveComponent(undefined));
+    onTransform?.({
+      position: {
+        x,
+        y,
+      },
+    });
   };
 
   return (
     <>
-      {cloneElement(component, {
-        onClick: handleSelect,
-        onTap: handleSelect,
+      {cloneElement(children, {
         onTransformEnd: handleTransformEnd,
-        draggable: true,
         onDragEnd: handleDragEnd,
         ref: shapeRef,
+        draggable: isSelected,
         ...props,
       })}
 
       {isSelected && (
         <Transformer
-          boundBoxFunc={(_oldBox, newBox) => newBox}
+          // boundBoxFunc={(_oldBox, newBox) => newBox}
           ref={transformerRef}
         />
       )}

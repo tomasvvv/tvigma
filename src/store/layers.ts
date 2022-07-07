@@ -6,6 +6,7 @@ import { Layer, LayerSliceState } from '../types/layers';
 const initialState: LayerSliceState = {
   layers: [],
   activeLayer: undefined,
+  activeComponent: undefined,
 };
 
 type LayerIndex = number;
@@ -50,6 +51,12 @@ const layersSlice = createSlice({
     ) => {
       state.activeLayer = action.payload;
     },
+    setActiveComponent: (
+      state,
+      action: PayloadAction<LayerSliceState['activeComponent']>
+    ) => {
+      state.activeComponent = action.payload;
+    },
     updateLayerComponent: (
       state,
       action: PayloadAction<UpdateLayerComponent>
@@ -57,16 +64,21 @@ const layersSlice = createSlice({
       const { layerId, componentId, size, position } = action.payload;
 
       const lIndex = state.layers.findIndex((l) => l.id === layerId);
-      if (!lIndex) return;
+      if (lIndex === -1) return;
 
       const cIndex = state.layers[lIndex].canvasComponents.findIndex(
         (c) => c.id === componentId
       );
 
-      if (!cIndex) return;
+      if (cIndex === -1) return;
 
-      state.layers[lIndex].canvasComponents[cIndex].size = size;
-      state.layers[lIndex].canvasComponents[cIndex].position = position;
+      if (size) {
+        state.layers[lIndex].canvasComponents[cIndex].size = size;
+      }
+
+      if (position) {
+        state.layers[lIndex].canvasComponents[cIndex].position = position;
+      }
     },
   },
 });
@@ -78,6 +90,7 @@ export const {
     removeLayer,
     swapLayers,
     setActiveLayer,
+    setActiveComponent,
     addComponentToLayer,
     updateLayerComponent,
   },

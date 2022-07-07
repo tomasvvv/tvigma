@@ -55,30 +55,6 @@ export const Sidebar: FC = () => {
       })
     );
   };
-  const handleCreateCircle = () => {
-    if (!activeLayer) return;
-
-    dispatch(
-      addComponentToLayer({
-        layerId: activeLayer,
-        component: {
-          id: generateRandomId(),
-          name: `Circle 1`,
-          shapeType: ComponentShapeType.Circle,
-          style: {
-            fillColor: Konva.Util.getRandomColor(),
-          },
-          size: {
-            radius: 20,
-          },
-          position: {
-            x: 10,
-            y: 20,
-          },
-        },
-      })
-    );
-  };
 
   return (
     <SidebarWrapper>
@@ -96,9 +72,6 @@ export const Sidebar: FC = () => {
       </button>
       <button onClick={handleCreateRect} type="button">
         RECT
-      </button>
-      <button onClick={handleCreateCircle} type="button">
-        CIRCLE
       </button>
     </SidebarWrapper>
   );
