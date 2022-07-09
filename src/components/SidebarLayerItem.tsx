@@ -3,7 +3,12 @@ import { FC } from 'react';
 import styled from 'styled-components';
 
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { removeLayer, setActiveLayer } from '../store/layers';
+import {
+  removeLayer,
+  setActiveComponent,
+  setActiveLayer,
+} from '../store/layers';
+import { CanvasComponent } from '../types/canvas';
 import { Layer } from '../types/layers';
 
 interface SidebarLayerItemProps extends Layer {}
@@ -13,12 +18,17 @@ export const SidebarLayerItem: FC<SidebarLayerItemProps> = ({
   name,
   canvasComponents,
 }) => {
-  const { activeLayer } = useAppSelector((s) => s.layers);
+  const { activeLayer, activeComponent } = useAppSelector((s) => s.layers);
   const dispatch = useAppDispatch();
 
   const handleLayerClick = () => {
     if (id === activeLayer) return;
     dispatch(setActiveLayer(id));
+  };
+
+  const handleComponentClick = (componentId: CanvasComponent['id']) => {
+    if (componentId === activeComponent) return;
+    dispatch(setActiveComponent(componentId));
   };
 
   const handleLayerDelete = (layerToDelete: string) => {
@@ -38,7 +48,10 @@ export const SidebarLayerItem: FC<SidebarLayerItemProps> = ({
       </LayerHeader>
       <ComponentsWrapper>
         {canvasComponents.map((c) => (
-          <span>{c.name}</span>
+          <span key={c.id} onClick={() => handleComponentClick(c.id)}>
+            {activeComponent === c.id && <span>***</span>}
+            {c.name}
+          </span>
         ))}
       </ComponentsWrapper>
     </StyledLayer>

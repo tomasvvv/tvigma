@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import reactPlugin from '@vitejs/plugin-react';
 import svgrPlugin from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import babelMacros from 'vite-plugin-babel-macros';
 
 export default defineConfig({
   build: {
@@ -9,5 +10,5 @@ export default defineConfig({
     emptyOutDir: true,
   },
   publicDir: 'public',
-  plugins: [reactPlugin(), svgrPlugin(), tsconfigPaths()],
+  plugins: [reactPlugin(), babelMacros(), svgrPlugin(), tsconfigPaths()],
 });

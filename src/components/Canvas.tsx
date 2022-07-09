@@ -1,81 +1,36 @@
 import { FC } from 'react';
-import { Circle, Layer, Rect, Stage } from 'react-konva';
+import { Stage } from 'react-konva';
+import { Provider, ReactReduxContext } from 'react-redux';
 
 import styled from 'styled-components';
 
+import { store } from '../store';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { setActiveLayer } from '../store/layers';
-import {
-  CanvasComponent,
-  CircleSize,
-  ComponentShapeType,
-  RectangleSize,
-} from '../types/canvas';
+import { setActiveComponent } from '../store/layers';
+import { LayerWithComponents } from './LayerWithComponents';
 
 export const Canvas: FC = () => {
-  const { layers, activeLayer } = useAppSelector((s) => s.layers);
+  const { layers, activeComponent } = useAppSelector((s) => s.layers);
   const dispatch = useAppDispatch();
 
-  const drawCanvasComponent = (canvasComponents: CanvasComponent) => {
-    const {
-      position: { x, y },
-      size,
-      style,
-      parentLayerId,
-      shapeType,
-    } = canvasComponents;
-
-    const switchActiveLayerIfNeeded = () => {
-      if (activeLayer !== parentLayerId) {
-        dispatch(setActiveLayer(parentLayerId));
-      }
-    };
-
-    const commonProps = {
-      fill: style.fillColor,
-      draggable: true,
-      onClick: switchActiveLayerIfNeeded,
-      onDragStart: switchActiveLayerIfNeeded,
-    };
-
-    switch (shapeType) {
-      case ComponentShapeType.Rectangle: {
-        return (
-          <Rect
-            height={(size as RectangleSize).height}
-            width={(size as RectangleSize).width}
-            x={x}
-            y={y}
-            {...commonProps}
-          />
-        );
-      }
-
-      case ComponentShapeType.Circle: {
-        return (
-          <Circle
-            radius={(size as CircleSize).radius}
-            x={x}
-            y={y}
-            {...commonProps}
-          />
-        );
-      }
-
-      default: {
-        return null;
-      }
+  const handleClick = ({ target: { attrs } }: any) => {
+    if (!attrs.id && activeComponent) {
+      dispatch(setActiveComponent(undefined));
     }
   };
 
   return (
     <CanvasWrapper>
-      <Stage height={window.innerHeight - 200} width={window.innerWidth - 500}>
-        {layers.map((layer) => (
-          <Layer key={layer.id}>
-            {layer.canvasComponents.map((comp) => drawCanvasComponent(comp))}
-          </Layer>
-        ))}
+      <Stage
+        height={window.innerHeight - 200}
+        onClick={handleClick}
+        width={window.innerWidth - 500}
+      >
+        <Provider store={store}>
+          {layers.map((l) => (
+            <LayerWithComponents {...l} />
+          ))}
+        </Provider>
       </Stage>
     </CanvasWrapper>
   );

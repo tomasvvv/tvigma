@@ -11,6 +11,7 @@ import {
 } from '../store/layers';
 import { ComponentShapeType } from '../types/canvas';
 import { generateRandomId } from '../utils/number';
+import { ToolButton } from './buttons/ToolButton';
 import { SidebarLayerItem } from './SidebarLayerItem';
 
 export const Sidebar: FC = () => {
@@ -55,30 +56,6 @@ export const Sidebar: FC = () => {
       })
     );
   };
-  const handleCreateCircle = () => {
-    if (!activeLayer) return;
-
-    dispatch(
-      addComponentToLayer({
-        layerId: activeLayer,
-        component: {
-          id: generateRandomId(),
-          name: `Circle 1`,
-          shapeType: ComponentShapeType.Circle,
-          style: {
-            fillColor: Konva.Util.getRandomColor(),
-          },
-          size: {
-            radius: 20,
-          },
-          position: {
-            x: 10,
-            y: 20,
-          },
-        },
-      })
-    );
-  };
 
   return (
     <SidebarWrapper>
@@ -91,15 +68,8 @@ export const Sidebar: FC = () => {
             <SidebarLayerItem key={layer.id} {...layer} />
           ))}
       </LayerList>
-      <button onClick={handleNewCreate} type="button">
-        Create new layer
-      </button>
-      <button onClick={handleCreateRect} type="button">
-        RECT
-      </button>
-      <button onClick={handleCreateCircle} type="button">
-        CIRCLE
-      </button>
+      <ToolButton onClick={handleNewCreate}>Create new layer</ToolButton>
+      <ToolButton onClick={handleCreateRect}>RECT</ToolButton>
     </SidebarWrapper>
   );
 };
