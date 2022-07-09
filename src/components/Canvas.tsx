@@ -28,7 +28,7 @@ export const Canvas: FC = () => {
       >
         <Provider store={store}>
           {layers.map((l) => (
-            <LayerWithComponents key={l.id} {...l} />
+            <LayerWithComponents {...l} />
           ))}
         </Provider>
       </Stage>

@@ -2,7 +2,6 @@ import { cloneElement, FC, ReactElement, useEffect, useRef } from 'react';
 import { Transformer } from 'react-konva';
 
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { setActiveComponent } from '../store/layers';
 import { CanvasComponent } from '../types/canvas';
 import { TransformationEvent } from '../types/layers';
 
@@ -59,8 +58,6 @@ export const CanvasTransformerComponent: FC<Props> = ({
       attrs: { x, y },
     },
   }: any) => {
-    console.log(`drag end`);
-    // dispatch(setActiveComponent(undefined));
     onTransform?.({
       position: {
         x,
@@ -79,12 +76,7 @@ export const CanvasTransformerComponent: FC<Props> = ({
         ...props,
       })}
 
-      {isSelected && (
-        <Transformer
-          // boundBoxFunc={(_oldBox, newBox) => newBox}
-          ref={transformerRef}
-        />
-      )}
+      {isSelected && <Transformer ref={transformerRef} />}
     </>
   );
 };
