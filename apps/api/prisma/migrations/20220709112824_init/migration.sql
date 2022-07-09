@@ -1,0 +1,4 @@
+-- CreateTable
+CREATE TABLE "Layer" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+);
