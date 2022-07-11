@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { NewCanvasComponent, UpdateLayerComponent } from '../types/canvas';
-import { Layer, LayerSliceState } from '../types/layers';
+import { NewCanvasComponent, UpdateLayerComponent } from '../../types/canvas';
+import { Layer, LayerSliceState } from '../../types/layers';
 
 const initialState: LayerSliceState = {
   layers: [],

@@ -1,15 +1,19 @@
 import { FC } from 'react';
 import { Stage } from 'react-konva';
-import { Provider, ReactReduxContext } from 'react-redux';
+import { Provider } from 'react-redux';
 
 import styled from 'styled-components';
+import { trpc } from '../services/trpc';
 
 import { store } from '../store';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { setActiveComponent } from '../store/layers';
+import { setActiveComponent } from '../store/layers/slice';
 import { LayerWithComponents } from './LayerWithComponents';
 
 export const Canvas: FC = () => {
+  const { data: layersData } = trpc.useQuery(['layers.getAll']);
+  
+
   const { layers, activeComponent } = useAppSelector((s) => s.layers);
   const dispatch = useAppDispatch();
 
@@ -26,6 +30,10 @@ export const Canvas: FC = () => {
         onClick={handleClick}
         width={window.innerWidth - 500}
       >
+        {/**
+         * A way to bridge redux with konvajs stage
+         * Otherwise react-redux will crash 
+         */}
         <Provider store={store}>
           {layers.map((l) => (
             <LayerWithComponents {...l} />

@@ -1,6 +1,7 @@
 import { TransformationEvent } from './layers';
 
 export enum ComponentShapeType {
+  // TODO: should be imported from api prismas enum
   Rectangle = 'rect',
   // Circle = 'circle',
 }
@@ -21,7 +22,7 @@ export interface RectangleSize {
 }
 
 export interface CanvasComponent {
-  id: string;
+  id: number;
   parentLayerId: string;
   name: string;
   shapeType: ComponentShapeType;

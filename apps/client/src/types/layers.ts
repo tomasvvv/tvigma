@@ -1,7 +1,7 @@
 import { CanvasComponent } from './canvas';
 
 export interface LayerBase {
-  id: string;
+  id: number;
   order: number;
   name: string;
 }

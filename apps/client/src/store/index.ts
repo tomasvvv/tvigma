@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { layersReducer } from './layers';
+import { layersReducer } from './layers/slice';
+import { syncReducer } from './sync/slice';
 
 const reducer = {
   layers: layersReducer,
+  sync: syncReducer
 };
 
 export const store = configureStore({

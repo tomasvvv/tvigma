@@ -8,53 +8,57 @@ import {
   addComponentToLayer,
   pushLayer,
   setActiveLayer,
-} from '../store/layers';
+} from '../store/layers/slice';
 import { ComponentShapeType } from '../types/canvas';
 import { generateRandomId } from '../utils/number';
 import { ToolButton } from './buttons/ToolButton';
 import { SidebarLayerItem } from './SidebarLayerItem';
+import { trpc } from '../services/trpc';
 
 export const Sidebar: FC = () => {
   const { layers, activeLayer } = useAppSelector((s) => s.layers);
   const dispatch = useAppDispatch();
+  const createLayer = trpc.useMutation('layers.create');
+  const createComponent = trpc.useMutation('shapes.create');
 
-  const handleNewCreate = () => {
-    const id = generateRandomId();
-    dispatch(
-      pushLayer({
-        id,
-        order: layers.length,
-        canvasComponents: [],
-        name: `Layer ${layers.length + 1}`,
-      })
-    );
-    dispatch(setActiveLayer(id));
-  };
+  const handleNewCreate = async () => {
+    const id = await createLayer.mutateAsync({
+      name: `Layer ${layers.length + 1}`,
+    })
 
-  const handleCreateRect = () => {
-    if (!activeLayer) return;
+    if(!id) return;
 
-    dispatch(
-      addComponentToLayer({
-        layerId: activeLayer,
-        component: {
-          id: generateRandomId(),
-          name: `Rectangle 1`,
-          shapeType: ComponentShapeType.Rectangle,
-          style: {
-            fillColor: Konva.Util.getRandomColor(),
-          },
-          size: {
-            width: 20,
-            height: 20,
-          },
-          position: {
-            x: 10,
-            y: 20,
-          },
-        },
-      })
-    );
+    // dispatch(
+    //   pushLayer({
+    //     id,
+        
+    //   x:
+    //   y:
+    //   scaleX:
+    //   scaleY:
+    // })
+
+    // dispatch(
+    //   addComponentToLayer({
+    //     layerId: activeLayer,
+    //     component: {
+    //     id: generateRandomId(),
+    //       name: `Rectangle 1`,
+    //       shapeType: ComponentShapeType.Rectangle,
+    //       style: {
+    //         fillColor: Konva.Util.getRandomColor(),
+    //       },
+    //       size: {
+    //         width: 20,
+    //         height: 20,
+    //       },
+    //       position: {
+    //         x: 10,
+    //         y: 20,
+    //       },
+    //     },
+    //   })
+    // );
   };
 
   return (
@@ -69,7 +73,7 @@ export const Sidebar: FC = () => {
           ))}
       </LayerList>
       <ToolButton onClick={handleNewCreate}>Create new layer</ToolButton>
-      <ToolButton onClick={handleCreateRect}>RECT</ToolButton>
+      {/* <ToolButton onClick={handleCreateRect}>RECT</ToolButton> */}
     </SidebarWrapper>
   );
 };

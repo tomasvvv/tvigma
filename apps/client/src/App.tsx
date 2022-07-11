@@ -1,15 +1,16 @@
 import { FC } from 'react';
-import { useStrictMode } from 'react-konva';
 
 import styled from 'styled-components';
 
 import { Canvas } from './components/Canvas';
 import { Sidebar } from './components/Sidebar';
+import { Overlays } from './components/layouts/Overlays';
 
 export const App: FC = () => (
   <AppWrapper>
     <Canvas />
     <Sidebar />
+    <Overlays />
   </AppWrapper>
 );
 

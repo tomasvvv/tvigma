@@ -7,7 +7,7 @@ import {
   removeLayer,
   setActiveComponent,
   setActiveLayer,
-} from '../store/layers';
+} from '../store/layers/slice';
 import { CanvasComponent } from '../types/canvas';
 import { Layer } from '../types/layers';
 
@@ -31,9 +31,9 @@ export const SidebarLayerItem: FC<SidebarLayerItemProps> = ({
     dispatch(setActiveComponent(componentId));
   };
 
-  const handleLayerDelete = (layerToDelete: string) => {
-    dispatch(removeLayer(layerToDelete));
-  };
+  // const handleLayerDelete = (layerToDelete: string) => {
+  //   dispatch(removeLayer(layerToDelete));
+  // };
 
   return (
     <StyledLayer
@@ -42,9 +42,9 @@ export const SidebarLayerItem: FC<SidebarLayerItemProps> = ({
     >
       <LayerHeader>
         <LayerTitle>{name}</LayerTitle>
-        <button onClick={() => handleLayerDelete(id)} type="button">
+        {/* <button onClick={() => handleLayerDelete(id)} type="button">
           X
-        </button>
+        </button> */}
       </LayerHeader>
       <ComponentsWrapper>
         {canvasComponents.map((c) => (

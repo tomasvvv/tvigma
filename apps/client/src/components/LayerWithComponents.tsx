@@ -5,7 +5,7 @@ import {
   setActiveComponent,
   setActiveLayer,
   updateLayerComponent,
-} from '../store/layers';
+} from '../store/layers/slice';
 import { Layer, TransformationEvent } from '../types/layers';
 import { CanvasTransformerComponent } from './CanvasTransformerComponent';
 
@@ -19,7 +19,7 @@ export const LayerWithComponents = ({
   return (
     <KonvaLayer key={layerId}>
       <KonvaGroup>
-        {canvasComponents.map(
+        {/* {canvasComponents.map(
           ({ size, id, parentLayerId, position, style }) => {
             const switchActiveLayerIfNeeded = () => {
               if (activeLayer !== parentLayerId) {
@@ -60,7 +60,7 @@ export const LayerWithComponents = ({
               </CanvasTransformerComponent>
             );
           }
-        )}
+        )} */}
       </KonvaGroup>
     </KonvaLayer>
   );

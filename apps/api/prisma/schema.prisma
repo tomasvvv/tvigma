@@ -6,11 +6,32 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = "file:./dev.db"
 }
 
 
 model Layer {
-  id      Int   @id @default(autoincrement())
+  id        String  @id @default(uuid())
+  name      String
+  shapes    Shape[]
+}
+
+model Shape {
+  id        String  @id @default(uuid())
+  layer     Layer   @relation(fields: [layerId], references: [id])
+  layerId   String
+  x         Float                         
+  y         Float             
+  scaleX    Float
+  scaleY    Float
+  shape     String  @default("rect")
+  style     ShapeStyle?
+  styleId   String
+}
+
+model ShapeStyle {
+  id        String  @id @default(uuid())
+  shape     Shape   @relation(fields: [shapeId], references: [id])
+  shapeId   String  @unique
 }
